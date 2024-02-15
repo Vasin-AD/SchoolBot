@@ -17,7 +17,7 @@ def start(message):
 
 @bot.message_handler(commands=['pogoda'])
 def pogoda(message):
-
+    qeqweq = "qeqq"
     responce = requests.get(
         url='https://api.weather.yandex.ru/v2/informers',
         params={'lat' : 56.316659, 'lon' : 44.029055, 'lang' : 'ru_RU'},
