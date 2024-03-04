@@ -75,6 +75,21 @@ def get_class(message):
     bot.send_message(message.chat.id, "Выбери букву класса: ", reply_markup=markup)
     bot.set_state(message.from_user.id, ScheduleStates.waiting_mark, message.chat.id)
 
+@bot.message_handler(state=ScheduleStates.waiting_mark)
+def get_day(message):
+    mark = message.text
+
+    with bot.retrieve_data(message.from_user.id, message.chat.id) as data:
+         data['mark'] = mark
+    
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    for i in ['Понедельник','Вторник','Среда', 'Четверг','Пятница']:
+        btn = types.KeyboardButton(i)
+        markup.add(btn)
+    
+    bot.send_message(message.chat.id, "Выбери день", reply_markup=markup)
+    bot.set_state(message.from_user.id, ScheduleStates.waiting_mark, message.chat.id)
+
 
 
 bot.polling()
