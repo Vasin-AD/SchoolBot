@@ -39,22 +39,10 @@ def start(message):
 
     bot.send_message(message.chat.id, f"Привет {name}!")
 
+@bot.message_handler(commands=['help'])
+def start(message):
 
-@bot.message_handler(commands=['pogoda'])
-def pogoda(message):
-    responce = requests.get(
-        url='https://api.weather.yandex.ru/v2/informers',
-        params={'lat' : 56.316659, 'lon' : 44.029055, 'lang' : 'ru_RU'},
-        headers={'X-Yandex-API-Key' : 'c8ef6c5f-d118-406e-b409-1314691110db'}
-    )
-
-    data = responce.json()
-    temp = data["fact"]["temp"]
-    condition = data["fact"]["condition"]
-
-    feels_like = data["fact"]["feels_like"]
-    bot.send_message(message.chat.id, f"Температура: {temp}\nОщущаемая температура: {feels_like}\n{condition}")
-
+    bot.send_message(message.chat.id, f"Привет. Я тебе помогу разобраться в Телеграмм-Боте. \n /start -команда, служит только для запуска бота \n /help – команда выводит информацию о командах бота \n /schedule – команда , служит для получения расписания \n Надеюсь, ты разобрался в Телеграмм-Боте. Удачи!")
 
 @bot.message_handler(commands=['schedule'])
 def schedule(message):
@@ -111,7 +99,7 @@ def get_day(message):
         _class = data['number_class']
 
     try:
-        excel_data = pd.read_excel(f'./data/{_class} Класс.xlsx', sheet_name=f"{_mark}", header=None)
+        excel_data = pd.read_excel(f'./data/{_class} Класс.xlsx', sheet_name=f"{_mark}", header=None).dropna()
         ans = [lesson for lesson in excel_data[day_to_number[day]]]
         ans = '\n'.join(ans)
         bot.send_message(message.chat.id, ans, reply_markup=types.ReplyKeyboardRemove())
